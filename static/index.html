@@ -4,10 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Citizen Scheme AI — Multilingual Welfare Navigator & Eligibility Engine</title>
+  <script>
+    // Theme initialization to prevent FOUC
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -53,6 +65,12 @@
 
         <!-- Right Header Actions -->
         <div class="flex items-center space-x-3">
+          <!-- Dark / Light Mode Toggle Button -->
+          <button id="theme-toggle-btn" onclick="toggleTheme()" class="flex items-center justify-center w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-amber-400 transition cursor-pointer shadow-2xs" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+            <span id="theme-icon-dark" class="text-base select-none">🌙</span>
+            <span id="theme-icon-light" class="text-base select-none hidden">☀️</span>
+          </button>
+
           <!-- Language Selector -->
           <div class="relative">
             <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-slate-100 border border-slate-300 text-slate-800 text-xs sm:text-sm font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-3 py-1.5 pr-8 cursor-pointer">

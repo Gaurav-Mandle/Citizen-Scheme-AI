@@ -22,6 +22,7 @@ const state = {
 // =============================================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
+  initTheme();
   await Promise.all([
     fetchTranslations(state.currentLang),
     fetchCategories(),
@@ -982,4 +983,33 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// =============================================================================
+// DARK / LIGHT THEME TOGGLE
+// =============================================================================
+
+function initTheme() {
+  const isDark = document.documentElement.classList.contains('dark');
+  updateThemeIcons(isDark);
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  updateThemeIcons(isDark);
+}
+
+function updateThemeIcons(isDark) {
+  const darkIcon = document.getElementById('theme-icon-dark');
+  const lightIcon = document.getElementById('theme-icon-light');
+  if (darkIcon && lightIcon) {
+    if (isDark) {
+      darkIcon.classList.add('hidden');
+      lightIcon.classList.remove('hidden');
+    } else {
+      darkIcon.classList.remove('hidden');
+      lightIcon.classList.add('hidden');
+    }
+  }
 }

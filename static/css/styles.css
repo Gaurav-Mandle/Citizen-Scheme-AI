@@ -173,3 +173,141 @@ select,
 textarea {
   font-family: inherit;
 }
+
+/* ==========================================================================
+   Dark Mode Design System
+   Provides comprehensive dark mode styling when html.dark is active.
+   ========================================================================== */
+
+html.dark body {
+  background-color: #0b1120 !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark header {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+}
+
+html.dark #header-brand-title {
+  color: #ffffff !important;
+}
+
+html.dark #header-tagline {
+  color: #94a3b8 !important;
+}
+
+html.dark .bg-white {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-900,
+html.dark .text-slate-800 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .border-slate-200,
+html.dark .border-slate-300,
+html.dark .border-slate-100 {
+  border-color: #334155 !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+html.dark .hero-gradient {
+  background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 10% 90%, rgba(234, 88, 12, 0.1) 0%, transparent 40%),
+              #0f172a !important;
+}
+
+html.dark .tab-btn {
+  color: #94a3b8 !important;
+}
+
+html.dark .tab-btn:hover {
+  color: #ffffff !important;
+  background-color: #1e293b !important;
+}
+
+html.dark .tab-btn.active {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3) !important;
+}
+
+html.dark .chat-bubble-assistant {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark .markdown-body h3,
+html.dark .markdown-body strong {
+  color: #f8fafc !important;
+}
+
+html.dark footer {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+}
+
+html.dark .modal-card {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+html.dark #theme-toggle-btn {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f59e0b !important;
+}
+
+html.dark #theme-toggle-btn:hover {
+  background-color: #334155 !important;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #0f172a !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155 !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569 !important;
+}
+
+/* Smooth transition for theme switching */
+body, header, footer, div, section, button, input, select, textarea {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
