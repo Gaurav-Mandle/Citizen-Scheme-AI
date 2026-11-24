@@ -4,8 +4,8 @@
 
 [![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B.svg)](https://streamlit.io/)
-[![Pytest Coverage](https://img.shields.io/badge/Tests-43%20Passed-brightgreen.svg)](tests/)
+[![UI](https://img.shields.io/badge/UI-Modern%20SPA%20%26%20Streamlit-blue.svg)](server.py)
+[![Pytest Coverage](https://img.shields.io/badge/Tests-60%20Passed-brightgreen.svg)](tests/)
 [![Security Hardened](https://img.shields.io/badge/Security-Sanitized%20%26%20Hardened-success.svg)](core/security.py)
 [![Offline Ready](https://img.shields.io/badge/Offline-100%25%20Zero%20Lag-orange.svg)](core/rag_engine.py)
 
@@ -67,10 +67,18 @@ Real-time UI and knowledge translation across:
 ```text
 Citizen-Scheme-AI/
 │
-├── app.py                      # Main production Streamlit web application
-├── requirements.txt            # Verified dependencies
+├── app.py                      # Original untouched Streamlit application (Safe Switch Option B)
+├── server.py                   # Modern FastAPI API server & static web app host (Safe Switch Option A)
+├── run.py                      # Safe switch launcher (--ui modern | --ui classic | --test)
+├── start.bat                   # Interactive one-click launcher for Windows
+├── requirements.txt            # Pinned dependencies
 ├── README.md                   # Project documentation & presentation guide
 ├── .gitignore                  # Git exclusions for python/streamlit
+│
+├── static/                     # Modern Web Portal frontend (No Node.js / npm required)
+│   ├── index.html              # HTML5 Single-Page Portal with Tailwind CSS
+│   ├── css/styles.css          # Civic tech design styling
+│   └── js/app.js               # Reactive frontend logic, multilingual support, and API connector
 │
 ├── core/                       # Core engine modules
 │   ├── __init__.py
@@ -89,7 +97,7 @@ Citizen-Scheme-AI/
 │   ├── PROJECT_SYNOPSIS.md     # Academic Project Synopsis
 │   └── ARCHITECTURE.md         # System Architecture & Technical Specifications
 │
-└── tests/                      # Automated test suite (43 unit & integration tests)
+└── tests/                      # Automated test suite (60 unit & integration tests)
     ├── __init__.py
     ├── test_models.py          # Schema validation tests
     ├── test_database.py        # Scheme storage & filter tests
@@ -97,7 +105,8 @@ Citizen-Scheme-AI/
     ├── test_rag.py             # Semantic RAG retrieval tests
     ├── test_marathi_rag.py     # Marathi multilingual queries
     ├── test_security.py        # Security & sanitization tests
-    └── test_edge_cases.py      # Boundary values & performance benchmarks
+    ├── test_edge_cases.py      # Boundary values & performance benchmarks
+    └── test_server.py          # Modern FastAPI server endpoints & static delivery tests
 ```
 
 ---
@@ -121,14 +130,33 @@ pip install -r requirements.txt
 ### 3. Run Automated Tests
 ```bash
 pytest -v
+# or
+python run.py --test
 ```
-*All 32 tests will execute and pass in under 2 seconds.*
+*All 60 tests execute and pass in ~2 seconds.*
 
-### 4. Launch Application
+### 4. Launch Application (Safe Switch Enabled)
+
+Citizen Scheme AI provides a **zero-breakage safe switch** allowing you to run either the Modern Civic Tech Web Portal or the Classic Streamlit UI at any time:
+
+#### Option A: Modern Civic Tech Web Portal (FastAPI + Tailwind Single Page App)
 ```bash
+python run.py --ui modern
+# or directly:
+python server.py
+```
+Open your browser at `http://127.0.0.1:8000`.
+
+#### Option B: Classic Streamlit Application (Untouched Legacy UI)
+```bash
+python run.py --ui classic
+# or directly:
 streamlit run app.py
 ```
 Open your browser at `http://localhost:8501`.
+
+#### Windows Quick Launcher:
+Simply double-click `start.bat` to choose your interface mode interactively.
 
 ---
 

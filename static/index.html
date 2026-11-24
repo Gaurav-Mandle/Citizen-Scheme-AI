@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Citizen Scheme AI — Multilingual Welfare Navigator & Eligibility Engine</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#0f172a',
+              saffron: '#ea580c',
+              green: '#15803d',
+              blue: '#2563eb',
+              light: '#f8fafc'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-800">
+
+  <!-- Tricolor Top Stripe -->
+  <div class="tricolor-stripe w-full"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Brand / Logo -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 via-white to-emerald-600 p-[2px] shadow-sm flex items-center justify-center">
+            <div class="w-full h-full bg-slate-900 rounded-md flex items-center justify-center text-white font-bold text-lg">
+              🏛️
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="font-extrabold text-slate-900 text-lg tracking-tight" id="header-brand-title">Citizen Scheme AI</span>
+              <span class="text-xs px-2 py-0.5 bg-blue-100 text-blue-800 font-semibold rounded-full border border-blue-200">v2.0 Modern</span>
+            </div>
+            <p class="text-xs text-slate-500 font-medium hidden sm:block" id="header-tagline">Multilingual Citizen Welfare Scheme Discovery & Explainable Eligibility</p>
+          </div>
+        </div>
+
+        <!-- Right Header Actions -->
+        <div class="flex items-center space-x-3">
+          <!-- Safe Switch Indicator / Button -->
+          <button onclick="toggleSafeSwitchModal()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 transition" title="Safe Switch status & instructions">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="hidden md:inline">Safe Switch:</span>
+            <span>Modern UI</span>
+            <svg class="w-3.5 h-3.5 ml-1 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
+
+          <!-- Language Selector -->
+          <div class="relative">
+            <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-slate-100 border border-slate-300 text-slate-800 text-xs sm:text-sm font-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-3 py-1.5 pr-8 cursor-pointer">
+              <option value="en">🌐 English</option>
+              <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+              <option value="mr">🇮🇳 मराठी (Marathi)</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Navigation Tabs Bar -->
+    <div class="border-t border-slate-100 bg-slate-50/70 backdrop-blur-xs">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex space-x-1 sm:space-x-2 overflow-x-auto py-2 no-scrollbar" aria-label="Tabs">
+          <button onclick="switchTab('explore')" id="tab-btn-explore" class="tab-btn active px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap flex items-center space-x-1.5">
+            <span>🔍</span>
+            <span data-i18n="tab_explore">Explore Schemes</span>
+          </button>
+          <button onclick="switchTab('eligibility')" id="tab-btn-eligibility" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 whitespace-nowrap flex items-center space-x-1.5">
+            <span>🎯</span>
+            <span data-i18n="tab_eligibility">Eligibility Navigator</span>
+          </button>
+          <button onclick="switchTab('assistant')" id="tab-btn-assistant" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 whitespace-nowrap flex items-center space-x-1.5">
+            <span>💬</span>
+            <span data-i18n="tab_assistant">AI Citizen Assistant</span>
+          </button>
+          <button onclick="switchTab('compare')" id="tab-btn-compare" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 whitespace-nowrap flex items-center space-x-1.5">
+            <span>⚖️</span>
+            <span data-i18n="tab_compare">Compare & Benefits</span>
+          </button>
+          <button onclick="switchTab('verification')" id="tab-btn-verification" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 whitespace-nowrap flex items-center space-x-1.5">
+            <span>🛡️</span>
+            <span data-i18n="tab_verification">Trust & Architecture</span>
+          </button>
+          <button onclick="switchTab('admin')" id="tab-btn-admin" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 whitespace-nowrap flex items-center space-x-1.5">
+            <span>⚙️</span>
+            <span data-i18n="tab_admin">Add Scheme</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ===================================================================== -->
+    <!-- TAB 1: SCHEME EXPLORER -->
+    <!-- ===================================================================== -->
+    <section id="tab-explore" class="tab-content space-y-6">
+      <!-- Search & Filter Card -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+          <!-- Text Search -->
+          <div class="md:col-span-6 relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <input
+              type="text"
+              id="scheme-search-input"
+              oninput="handleSchemeSearch()"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              placeholder="Search by keyword (e.g. farmer, student loan, pension, medical)..."
+            />
+          </div>
+
+          <!-- Category Filter -->
+          <div class="md:col-span-3">
+            <select id="scheme-cat-filter" onchange="handleSchemeSearch()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+
+          <!-- Ministry Filter -->
+          <div class="md:col-span-3">
+            <select id="scheme-min-filter" onchange="handleSchemeSearch()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="">All Ministries</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Category Pills quick filter -->
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2 overflow-x-auto no-scrollbar">
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider whitespace-nowrap">Popular:</span>
+          <div id="quick-category-pills" class="flex items-center gap-1.5 flex-nowrap"></div>
+        </div>
+      </div>
+
+      <!-- Schemes Stats & Grid -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-base font-semibold text-slate-900" id="schemes-counter-text">Loading schemes...</h2>
+          <span class="text-xs text-slate-500">Showing verified central & state welfare schemes</span>
+        </div>
+        <div id="schemes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 2: ELIGIBILITY WIZARD -->
+    <!-- ===================================================================== -->
+    <section id="tab-eligibility" class="tab-content hidden space-y-6">
+      
+      <!-- Profile Input Card -->
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
+        <div class="border-b border-slate-100 pb-4 mb-5">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+            <span>👤</span>
+            <span data-i18n="profile_title">Enter Your Demographic Profile</span>
+          </h2>
+          <p class="text-sm text-slate-500 mt-1" data-i18n="profile_subtitle">
+            Deterministic rule engine checks official eligibility constraints transparently.
+          </p>
+        </div>
+
+        <form id="eligibility-form" onsubmit="submitEligibility(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            <!-- Age -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" data-i18n="age_label">Age (years)</label>
+              <input type="number" id="p-age" min="0" max="120" value="28" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <!-- Gender -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" data-i18n="gender_label">Gender</label>
+              <select id="p-gender" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Transgender">Transgender</option>
+                <option value="Any">Any / Not Specified</option>
+              </select>
+            </div>
+
+            <!-- State -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" data-i18n="state_label">State of Residence</label>
+              <select id="p-state" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500">
+                <option value="All India">All India</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Haryana">Haryana</option>
+                <option value="Delhi">Delhi</option>
+              </select>
+            </div>
+
+            <!-- Annual Income -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" data-i18n="income_label">Annual Household Income (₹)</label>
+              <input type="number" id="p-income" min="0" max="10000000" step="10000" value="180000" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <!-- Occupation -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" data-i18n="occupation_label">Occupation / Livelihood</label>
+              <select id="p-occupation" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500">
+                <option value="Farmer">Farmer</option>
+                <option value="Student">Student</option>
+                <option value="Artisan/Craftsperson">Artisan / Craftsperson</option>
+                <option value="Daily Wage Worker">Daily Wage Worker</option>
+                <option value="Self-Employed">Self-Employed / Vendor</option>
+                <option value="Unemployed">Unemployed</option>
+                <option value="Salaried/Corporate">Salaried / Corporate</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <!-- Category -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" data-i18n="category_label">Social Category</label>
+              <select id="p-category" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500">
+                <option value="General">General</option>
+                <option value="OBC">OBC (Other Backward Classes)</option>
+                <option value="SC">SC (Scheduled Caste)</option>
+                <option value="ST">ST (Scheduled Tribe)</option>
+                <option value="EWS">EWS (Economically Weaker Section)</option>
+              </select>
+            </div>
+
+            <!-- Landholding -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1" data-i18n="landholding_label">Agricultural Landholding (Hectares)</label>
+              <input type="number" id="p-land" min="0" max="100" step="0.5" value="1.5" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <!-- Checkboxes Row -->
+            <div class="sm:col-span-2 lg:col-span-2 flex flex-wrap gap-4 items-center pt-2">
+              <label class="inline-flex items-center space-x-2 text-sm text-slate-700 cursor-pointer">
+                <input type="checkbox" id="p-student" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                <span data-i18n="is_student_label">Currently a Student</span>
+              </label>
+
+              <label class="inline-flex items-center space-x-2 text-sm text-slate-700 cursor-pointer">
+                <input type="checkbox" id="p-pwd" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                <span data-i18n="is_pwd_label">Differently Abled (PwD)</span>
+              </label>
+
+              <label class="inline-flex items-center space-x-2 text-sm text-slate-700 cursor-pointer">
+                <input type="checkbox" id="p-bpl" checked class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                <span data-i18n="has_bpl_label">Holds BPL / Ration Card</span>
+              </label>
+            </div>
+
+          </div>
+
+          <!-- Submit CTA -->
+          <div class="pt-4 flex justify-end">
+            <button
+              type="submit"
+              id="btn-evaluate-eligibility"
+              class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-lg shadow-sm hover:shadow transition flex items-center justify-center space-x-2"
+            >
+              <span>🚀</span>
+              <span data-i18n="check_eligibility_btn">Evaluate My Scheme Eligibility</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Eligibility Results Section (Hidden until evaluated) -->
+      <div id="eligibility-results-container" class="hidden space-y-6">
+        
+        <!-- KPI Scorecards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+            <span class="text-xs font-semibold text-slate-500 uppercase">Schemes Evaluated</span>
+            <div class="text-2xl font-extrabold text-slate-900 mt-1" id="kpi-total">0</div>
+          </div>
+          <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-200 shadow-xs">
+            <span class="text-xs font-semibold text-emerald-700 uppercase">✅ Fully Eligible</span>
+            <div class="text-2xl font-extrabold text-emerald-700 mt-1" id="kpi-eligible">0</div>
+          </div>
+          <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200 shadow-xs">
+            <span class="text-xs font-semibold text-amber-700 uppercase">⚠️ Potential / Conditional</span>
+            <div class="text-2xl font-extrabold text-amber-700 mt-1" id="kpi-potential">0</div>
+          </div>
+          <div class="bg-rose-50/60 p-4 rounded-xl border border-rose-200 shadow-xs">
+            <span class="text-xs font-semibold text-rose-700 uppercase">❌ Ineligible</span>
+            <div class="text-2xl font-extrabold text-rose-700 mt-1" id="kpi-ineligible">0</div>
+          </div>
+        </div>
+
+        <!-- Download Roadmap Banner -->
+        <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-xl p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+          <div>
+            <h3 class="font-bold text-base sm:text-lg">Personalized Citizen Action Roadmap</h3>
+            <p class="text-xs sm:text-sm text-blue-200 mt-0.5">Download an exportable Markdown roadmap containing all qualified schemes, needed documents, and direct application links.</p>
+          </div>
+          <button
+            onclick="downloadRoadmap()"
+            id="btn-download-roadmap"
+            class="whitespace-nowrap px-4 py-2.5 bg-white hover:bg-blue-50 text-blue-950 font-bold text-xs sm:text-sm rounded-lg shadow transition flex items-center space-x-2"
+          >
+            <span>📥</span>
+            <span data-i18n="download_roadmap">Download Action Roadmap (.md)</span>
+          </button>
+        </div>
+
+        <!-- Evaluated Scheme Cards List -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-slate-900">Explainable Eligibility Audits</h3>
+            <div class="flex items-center space-x-1 bg-slate-200/60 p-1 rounded-lg text-xs font-medium">
+              <button onclick="filterAuditStatus('all')" id="audit-filter-all" class="px-2.5 py-1 rounded-md bg-white text-slate-900 shadow-xs">All</button>
+              <button onclick="filterAuditStatus('Eligible')" id="audit-filter-eligible" class="px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900">Eligible</button>
+              <button onclick="filterAuditStatus('Potentially Eligible')" id="audit-filter-potential" class="px-2.5 py-1 rounded-md text-slate-600 hover:text-slate-900">Conditional</button>
+            </div>
+          </div>
+
+          <div id="audit-results-list" class="space-y-3">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 3: AI CITIZEN ASSISTANT (RAG) -->
+    <!-- ===================================================================== -->
+    <section id="tab-assistant" class="tab-content hidden space-y-4">
+      
+      <!-- Chat Header & Preset Inquiries -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+              <span>💬</span>
+              <span data-i18n="chat_header">Ask Citizen Scheme AI Assistant</span>
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5" data-i18n="chat_caption">
+              Ask questions in English, Hindi, or Marathi regarding government welfare schemes, criteria, benefits, and application steps.
+            </p>
+          </div>
+          <button
+            onclick="clearChat()"
+            class="px-3 py-1.5 text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg hover:bg-rose-100 transition flex items-center space-x-1"
+          >
+            <span>🗑️</span>
+            <span data-i18n="clear_chat">Clear Conversation</span>
+          </button>
+        </div>
+
+        <!-- Preset Chips -->
+        <div>
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Sample Citizen Inquiries:</span>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="askPresetQuery('What are the benefits and eligibility criteria for PM-KISAN?')" class="text-xs px-3 py-1.5 bg-slate-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 text-slate-700 rounded-full border border-slate-200 transition font-medium">
+              🌾 PM-KISAN Benefit & Eligibility
+            </button>
+            <button onclick="askPresetQuery('How does Ayushman Bharat PM-JAY health insurance work and what is covered?')" class="text-xs px-3 py-1.5 bg-slate-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 text-slate-700 rounded-full border border-slate-200 transition font-medium">
+              🏥 Cashless Hospitalization (PM-JAY)
+            </button>
+            <button onclick="askPresetQuery('Which scholarship schemes can college students apply for?')" class="text-xs px-3 py-1.5 bg-slate-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 text-slate-700 rounded-full border border-slate-200 transition font-medium">
+              🎓 College Student Scholarships
+            </button>
+            <button onclick="askPresetQuery('What is PM Mudra Yojana and how can shopkeepers get a business loan?')" class="text-xs px-3 py-1.5 bg-slate-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 text-slate-700 rounded-full border border-slate-200 transition font-medium">
+              💼 Collateral-Free Mudra Business Loan
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Conversation Box -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-xs flex flex-col h-[520px]">
+        <!-- Scrollable messages container -->
+        <div id="chat-messages" class="flex-grow overflow-y-auto p-4 sm:p-6 space-y-4">
+          <!-- Welcome message -->
+          <div class="flex items-start space-x-3">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+              AI
+            </div>
+            <div class="chat-bubble-assistant p-4 rounded-xl max-w-2xl text-sm leading-relaxed">
+              <p class="font-semibold text-slate-900 mb-1">Namaste! How can I assist you with government welfare schemes today?</p>
+              <p class="text-slate-600">You can ask me questions in English, Hindi (हिंदी), or Marathi (मराठी) about eligibility guidelines, document requirements, and financial assistance amounts.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Input Bar -->
+        <div class="border-t border-slate-100 p-3 sm:p-4 bg-slate-50 rounded-b-xl">
+          <form id="chat-form" onsubmit="submitChatMessage(event)" class="flex items-center space-x-2">
+            <input
+              type="text"
+              id="chat-input"
+              class="flex-grow px-4 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              placeholder="Ask a question (e.g. How to apply for PM-KISAN? What is the income cap?)..."
+              required
+            />
+            <button
+              type="submit"
+              id="chat-send-btn"
+              class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-lg shadow-sm hover:shadow transition flex items-center space-x-1.5 shrink-0"
+            >
+              <span>Ask</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 4: SCHEME COMPARISON & BENEFIT ESTIMATOR -->
+    <!-- ===================================================================== -->
+    <section id="tab-compare" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-5">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+            <span>⚖️</span>
+            <span data-i18n="compare_header">Scheme Comparison & Benefit Estimator</span>
+          </h2>
+          <p class="text-sm text-slate-500 mt-0.5" data-i18n="select_schemes_compare">
+            Select schemes below to analyze side-by-side eligibility parameters and calculate combined financial benefits.
+          </p>
+        </div>
+
+        <!-- Multi-select scheme selector chips -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Select Schemes to Compare:</label>
+          <div id="compare-selection-chips" class="flex flex-wrap gap-2">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Calculated Benefit Counter KPI -->
+        <div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+          <div>
+            <span class="text-xs uppercase font-bold tracking-wider text-emerald-100" data-i18n="annual_benefit_calc">Total Estimated Annual Financial Benefit</span>
+            <div class="text-3xl font-black mt-1" id="total-annual-benefit-display">₹0 / year</div>
+          </div>
+          <span class="text-xs bg-white/20 px-3 py-1.5 rounded-full backdrop-blur-xs font-medium">Direct Cash & Subsidy Aid</span>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+          <table class="w-full text-left text-sm text-slate-700">
+            <thead class="bg-slate-100 text-xs uppercase font-semibold text-slate-600 border-b border-slate-200">
+              <tr>
+                <th class="py-3 px-4">Scheme Name</th>
+                <th class="py-3 px-4">Category</th>
+                <th class="py-3 px-4">Ministry</th>
+                <th class="py-3 px-4">Financial Benefit</th>
+                <th class="py-3 px-4">Target Group</th>
+                <th class="py-3 px-4">Max Income Allowed</th>
+                <th class="py-3 px-4">Documents Required</th>
+                <th class="py-3 px-4">Official Portal</th>
+              </tr>
+            </thead>
+            <tbody id="compare-table-body" class="divide-y divide-slate-100">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 5: ARCHITECTURE, TRUST & SECURITY -->
+    <!-- ===================================================================== -->
+    <section id="tab-verification" class="tab-content hidden space-y-6">
+      
+      <!-- Architectural Pillars -->
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-5">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+            <span>🏛️</span>
+            <span>Citizen Scheme AI System Architecture & Trust Framework</span>
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Engineered to overcome common vulnerabilities of generic LLM wrappers in public governance.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
+            <div class="flex items-center space-x-2 text-blue-700 font-bold mb-1">
+              <span>🎯</span>
+              <h4>1. Deterministic Rule Auditing</h4>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Eligibility decisions are computed through explicit condition logic (<code class="text-xs bg-slate-200 px-1 py-0.5 rounded">EligibilityEngine</code>), not probabilistic hallucination. Every result gives exact met, conditional, and unmet rules with audit trails.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
+            <div class="flex items-center space-x-2 text-emerald-700 font-bold mb-1">
+              <span>⚡</span>
+              <h4>2. Lightweight Offline Hybrid RAG</h4>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Vector TF-IDF semantic space and domain synonym expansion runs fully locally with zero external API calls, sub-millisecond response time, and verified source citations.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
+            <div class="flex items-center space-x-2 text-purple-700 font-bold mb-1">
+              <span>🔒</span>
+              <h4>3. Privacy-First (No PII Leakage)</h4>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Demographic and income figures are processed in transient local server memory. No citizen personal data is stored or forwarded to third-party model providers.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60">
+            <div class="flex items-center space-x-2 text-amber-700 font-bold mb-1">
+              <span>🛡️</span>
+              <h4>4. Multi-Layer Exploit Hardening</h4>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Strict regex & semantic defenses against prompt injections, XSS tag sanitization, path traversal blocking on Windows/Linux, and 1,000-character payload boundaries.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="pt-4 border-t border-slate-100">
+          <h3 class="text-sm font-bold text-slate-800 mb-3">Audited Quality & Security Safeguards</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="flex items-center space-x-2 text-slate-700">
+              <span class="text-emerald-600 font-bold">✔</span>
+              <span>100% deterministic decision explainability</span>
+            </div>
+            <div class="flex items-center space-x-2 text-slate-700">
+              <span class="text-emerald-600 font-bold">✔</span>
+              <span>English, Hindi (हिंदी) & Marathi (मराठी) localization</span>
+            </div>
+            <div class="flex items-center space-x-2 text-slate-700">
+              <span class="text-emerald-600 font-bold">✔</span>
+              <span>Safe switch guarantee preserving legacy Streamlit app</span>
+            </div>
+            <div class="flex items-center space-x-2 text-slate-700">
+              <span class="text-emerald-600 font-bold">✔</span>
+              <span>Automated test suite coverage (43+ passing tests)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 6: ADMIN PORTAL -->
+    <!-- ===================================================================== -->
+    <section id="tab-admin" class="tab-content hidden space-y-6">
+      
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs max-w-3xl mx-auto space-y-5">
+        <div class="border-b border-slate-100 pb-3">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+            <span>⚙️</span>
+            <span data-i18n="tab_admin">Add New Welfare Scheme</span>
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Register new government welfare schemes into the repository. Newly added schemes are immediately indexed into the RAG vector space and eligibility engine.
+          </p>
+        </div>
+
+        <form id="admin-add-scheme-form" onsubmit="submitNewScheme(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Unique Scheme ID</label>
+              <input type="text" id="adm-id" required placeholder="e.g. pm-poshan-yojana" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Official Scheme Name</label>
+              <input type="text" id="adm-name" required placeholder="e.g. PM Poshan Shakti Nirman" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Category</label>
+              <select id="adm-category" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500">
+                <option value="Agriculture">Agriculture</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Education">Education</option>
+                <option value="Housing">Housing</option>
+                <option value="Financial Inclusion">Financial Inclusion</option>
+                <option value="Social Welfare">Social Welfare</option>
+                <option value="Women & Child">Women & Child</option>
+                <option value="Skill & Employment">Skill & Employment</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Nodal Ministry</label>
+              <input type="text" id="adm-ministry" value="Ministry of Social Justice and Empowerment" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Description</label>
+              <textarea id="adm-desc" required rows="2" placeholder="Summary of what the scheme provides..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Key Benefits & Assistance</label>
+              <textarea id="adm-benefits" required rows="2" placeholder="Financial aid, nutritional meal, grant details..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Est. Annual Financial Benefit (₹ INR)</label>
+              <input type="number" id="adm-amount" min="0" value="10000" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Official Portal URL</label>
+              <input type="url" id="adm-portal" value="https://india.gov.in" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Required Documents (comma separated)</label>
+              <input type="text" id="adm-docs" value="Aadhaar Card, Income Certificate, Bank Account Details" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Target Beneficiary Demographic</label>
+              <input type="text" id="adm-target" value="Low income citizens and marginalized groups" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+          </div>
+
+          <div id="adm-feedback" class="hidden p-3 rounded-lg text-sm"></div>
+
+          <div class="flex justify-end pt-2">
+            <button
+              type="submit"
+              id="adm-submit-btn"
+              class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-lg shadow-sm transition"
+            >
+              Register & Re-index Scheme
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Scheme Detail Modal -->
+  <div id="scheme-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
+      <div class="p-6 border-b border-slate-100 flex items-start justify-between">
+        <div>
+          <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800" id="modal-scheme-category">Category</span>
+          <h2 class="text-xl font-extrabold text-slate-900 mt-1" id="modal-scheme-name">Scheme Title</h2>
+          <p class="text-xs text-slate-500 mt-0.5" id="modal-scheme-ministry">Nodal Ministry</p>
+        </div>
+        <button onclick="closeSchemeModal()" class="text-slate-400 hover:text-slate-700 text-2xl font-bold leading-none p-1">
+          &times;
+        </button>
+      </div>
+      <div class="p-6 space-y-4 text-sm" id="modal-scheme-body">
+        <!-- Content injected by JS -->
+      </div>
+      <div class="p-4 bg-slate-50 border-t border-slate-100 rounded-b-2xl flex items-center justify-between">
+        <span class="text-xs text-slate-500" id="modal-scheme-helpline"></span>
+        <div class="flex items-center space-x-2">
+          <button onclick="closeSchemeModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition">Close</button>
+          <a id="modal-scheme-portal-link" href="#" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition flex items-center space-x-1">
+            <span>Apply on Official Portal</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Safe Switch Help Modal -->
+  <div id="safe-switch-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold">
+          🛡️
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Safe Switch & Zero Breakage Guarantee</h3>
+          <p class="text-xs text-emerald-700 font-semibold">Active Mode: Modern Web App</p>
+        </div>
+      </div>
+      
+      <p class="text-sm text-slate-600 leading-relaxed">
+        The original Streamlit application (<code class="bg-slate-100 px-1 py-0.5 rounded text-xs">app.py</code>) remains <strong>100% intact, functional, and unmodified</strong>.
+      </p>
+
+      <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2">
+        <p class="font-semibold text-slate-800">To switch back or run the classic Streamlit app:</p>
+        <div class="font-mono bg-slate-900 text-emerald-400 p-2.5 rounded-lg text-xs">
+          python run.py --ui classic<br/>
+          # or directly:<br/>
+          streamlit run app.py
+        </div>
+        <p class="font-semibold text-slate-800 pt-1">To run this modern portal:</p>
+        <div class="font-mono bg-slate-900 text-blue-400 p-2.5 rounded-lg text-xs">
+          python run.py --ui modern<br/>
+          # or directly:<br/>
+          python server.py
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button onclick="toggleSafeSwitchModal()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg transition">
+          Got It
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p id="footer-disclaimer" data-i18n="disclaimer_text">
+        Disclaimer: Citizen Scheme AI provides indicative assistance based on official scheme guidelines. Citizens should verify with official portals or local district authorities before final submission.
+      </p>
+      <div class="flex items-center justify-center space-x-4 text-slate-400 pt-1">
+        <span>Citizen Scheme AI v2.0</span>
+        <span>•</span>
+        <span>Zero-Hallucination Deterministic Engine</span>
+        <span>•</span>
+        <button onclick="toggleSafeSwitchModal()" class="text-blue-600 hover:underline">Safe Switch Info</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Logic Scripts -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
