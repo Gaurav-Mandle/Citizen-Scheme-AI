@@ -159,7 +159,7 @@ body {
   bottom: 0;
   left: 0;
   z-index: 50;
-  background-color: rgba(15, 23, 42, 0.7);
+  background-color: rgba(15, 23, 42, 0.75);
   align-items: center;
   justify-content: center;
   padding: 1rem;
@@ -175,18 +175,23 @@ textarea {
 }
 
 /* ==========================================================================
-   Dark Mode Design System
-   Provides comprehensive dark mode styling when html.dark is active.
+   Comprehensive Dark Mode Design System
+   Provides deep contrast, readable text, and elegant dark cards when html.dark is active.
    ========================================================================== */
 
-html.dark body {
-  background-color: #0b1120 !important;
+html.dark,
+html.dark body,
+html.dark body.bg-slate-50 {
+  background-color: #0a0f1d !important;
   color: #f1f5f9 !important;
 }
 
-html.dark header {
+/* Header & Tab Bar */
+html.dark header,
+html.dark header.bg-white {
   background-color: #0f172a !important;
   border-color: #1e293b !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
 
 html.dark #header-brand-title {
@@ -197,58 +202,14 @@ html.dark #header-tagline {
   color: #94a3b8 !important;
 }
 
-html.dark .bg-white {
-  background-color: #0f172a !important;
+/* Sub-header navigation row */
+html.dark div[class*="bg-slate-50"],
+html.dark header + div {
+  background-color: #0c1322 !important;
   border-color: #1e293b !important;
-  color: #f1f5f9 !important;
 }
 
-html.dark .bg-slate-50,
-html.dark .bg-slate-100 {
-  background-color: #1e293b !important;
-  border-color: #334155 !important;
-  color: #f1f5f9 !important;
-}
-
-html.dark .text-slate-900,
-html.dark .text-slate-800 {
-  color: #f8fafc !important;
-}
-
-html.dark .text-slate-700 {
-  color: #e2e8f0 !important;
-}
-
-html.dark .text-slate-600,
-html.dark .text-slate-500 {
-  color: #94a3b8 !important;
-}
-
-html.dark .border-slate-200,
-html.dark .border-slate-300,
-html.dark .border-slate-100 {
-  border-color: #334155 !important;
-}
-
-html.dark input,
-html.dark select,
-html.dark textarea {
-  background-color: #1e293b !important;
-  border-color: #475569 !important;
-  color: #f8fafc !important;
-}
-
-html.dark input::placeholder,
-html.dark textarea::placeholder {
-  color: #64748b !important;
-}
-
-html.dark .hero-gradient {
-  background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
-              radial-gradient(circle at 10% 90%, rgba(234, 88, 12, 0.1) 0%, transparent 40%),
-              #0f172a !important;
-}
-
+/* Tab Navigation Buttons */
 html.dark .tab-btn {
   color: #94a3b8 !important;
 }
@@ -261,13 +222,164 @@ html.dark .tab-btn:hover {
 html.dark .tab-btn.active {
   background-color: #2563eb !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4) !important;
 }
 
+/* Elevated Cards & Containers */
+html.dark .bg-white,
+html.dark div[class*="bg-white"],
+html.dark section .bg-white {
+  background-color: #111827 !important;
+  border-color: #1f2937 !important;
+  color: #f9fafb !important;
+}
+
+/* Secondary Panels */
+html.dark .bg-slate-100,
+html.dark div[class*="bg-slate-100"],
+html.dark .bg-slate-200 {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #f3f4f6 !important;
+}
+
+/* Typography & Headings */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark .text-slate-900,
+html.dark .text-slate-800 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-500,
+html.dark .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-blue-950 {
+  color: #ffffff !important;
+}
+
+html.dark .text-blue-900,
+html.dark .text-blue-800 {
+  color: #93c5fd !important;
+}
+
+html.dark .text-blue-700,
+html.dark .text-blue-600 {
+  color: #60a5fa !important;
+}
+
+/* Borders */
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-300,
+html.dark [class*="border-slate-200"] {
+  border-color: #1f2937 !important;
+}
+
+/* Form Inputs, Selects & Textareas */
+html.dark input[type="text"],
+html.dark input[type="number"],
+html.dark input[type="url"],
+html.dark select,
+html.dark textarea,
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus {
+  background-color: #1e293b !important;
+  border-color: #374151 !important;
+  color: #f8fafc !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+html.dark select option {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+/* Hero Gradient in Dark Mode */
+html.dark .hero-gradient {
+  background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.2) 0%, transparent 60%),
+              radial-gradient(circle at 10% 90%, rgba(234, 88, 12, 0.15) 0%, transparent 50%),
+              #0f172a !important;
+  border-color: #1e293b !important;
+}
+
+/* Status Metric Badges */
+html.dark .badge-eligible {
+  background-color: rgba(6, 78, 59, 0.5) !important;
+  color: #6ee7b7 !important;
+  border-color: #047857 !important;
+}
+
+html.dark .badge-potential {
+  background-color: rgba(120, 53, 15, 0.5) !important;
+  color: #fcd34d !important;
+  border-color: #b45309 !important;
+}
+
+html.dark .badge-ineligible {
+  background-color: rgba(127, 29, 29, 0.5) !important;
+  color: #fca5a5 !important;
+  border-color: #b91c1c !important;
+}
+
+/* Status Metric Box Overrides (Tab 2) */
+html.dark [class*="bg-emerald-50"] {
+  background-color: rgba(6, 78, 59, 0.25) !important;
+  border-color: #065f46 !important;
+}
+html.dark [class*="bg-amber-50"] {
+  background-color: rgba(120, 53, 15, 0.25) !important;
+  border-color: #92400e !important;
+}
+html.dark [class*="bg-rose-50"] {
+  background-color: rgba(127, 29, 29, 0.25) !important;
+  border-color: #991b1b !important;
+}
+html.dark [class*="bg-blue-50"] {
+  background-color: rgba(30, 58, 138, 0.3) !important;
+  border-color: #1d4ed8 !important;
+}
+
+html.dark .text-emerald-700,
+html.dark .text-emerald-800 {
+  color: #6ee7b7 !important;
+}
+html.dark .text-amber-700,
+html.dark .text-amber-800 {
+  color: #fcd34d !important;
+}
+html.dark .text-rose-700,
+html.dark .text-rose-800 {
+  color: #fca5a5 !important;
+}
+
+/* Chat Assistant in Dark Mode */
 html.dark .chat-bubble-assistant {
   background-color: #1e293b !important;
   border-color: #334155 !important;
   color: #f1f5f9 !important;
+}
+
+html.dark .chat-bubble-user {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
 }
 
 html.dark .markdown-body h3,
@@ -275,39 +387,78 @@ html.dark .markdown-body strong {
   color: #f8fafc !important;
 }
 
-html.dark footer {
-  background-color: #0f172a !important;
-  border-color: #1e293b !important;
+html.dark .markdown-body a {
+  color: #60a5fa !important;
 }
 
-html.dark .modal-card {
-  background-color: #0f172a !important;
-  border-color: #334155 !important;
+/* Modals */
+html.dark #scheme-modal > div > div {
+  background-color: #111827 !important;
+  border-color: #374151 !important;
+  color: #f9fafb !important;
 }
 
+/* Scheme Comparison Table */
+html.dark th {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #374151 !important;
+}
+html.dark td {
+  border-color: #374151 !important;
+  color: #cbd5e1 !important;
+}
+html.dark tr:hover td {
+  background-color: #1f2937 !important;
+}
+
+html.dark .compare-chip {
+  background-color: #1e293b !important;
+  border-color: #374151 !important;
+  color: #cbd5e1 !important;
+}
+
+html.dark .compare-chip.selected {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* Toggle Buttons */
 html.dark #theme-toggle-btn {
   background-color: #1e293b !important;
-  border-color: #334155 !important;
-  color: #f59e0b !important;
+  border-color: #374151 !important;
+  color: #fbbf24 !important;
 }
-
 html.dark #theme-toggle-btn:hover {
   background-color: #334155 !important;
 }
 
+html.dark #lang-select {
+  background-color: #1e293b !important;
+  border-color: #374151 !important;
+  color: #f8fafc !important;
+}
+
+/* Footer */
+html.dark footer {
+  background-color: #0a0f1d !important;
+  border-color: #1e293b !important;
+  color: #94a3b8 !important;
+}
+
+/* Scrollbars in Dark Mode */
 html.dark ::-webkit-scrollbar-track {
   background: #0f172a !important;
 }
-
 html.dark ::-webkit-scrollbar-thumb {
   background: #334155 !important;
 }
-
 html.dark ::-webkit-scrollbar-thumb:hover {
   background: #475569 !important;
 }
 
-/* Smooth transition for theme switching */
+/* Smooth transitions */
 body, header, footer, div, section, button, input, select, textarea {
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
