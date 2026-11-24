@@ -5,6 +5,7 @@
 
 const state = {
   currentLang: 'en',
+  allSchemes: [],
   schemes: [],
   categories: [],
   ministries: [],
@@ -73,11 +74,16 @@ async function fetchMinistries() {
 
 async function fetchSchemes(params = {}) {
   try {
+    const isMasterFetch = Object.keys(params).length === 0;
     const query = new URLSearchParams(params).toString();
     const url = query ? `/api/schemes?${query}` : '/api/schemes';
     const res = await fetch(url);
     if (res.ok) {
-      state.schemes = await res.json();
+      const data = await res.json();
+      state.schemes = data;
+      if (isMasterFetch || state.allSchemes.length === 0) {
+        state.allSchemes = data;
+      }
       renderSchemesGrid(state.schemes);
       updateSchemesCounter(state.schemes.length);
     }
@@ -106,6 +112,10 @@ async function changeLanguage(lang) {
 
   // Re-render schemes to show native names if available
   renderSchemesGrid(state.schemes);
+  renderCompareChips();
+  if (state.compareSelectedIds.length > 0) {
+    updateComparisonView();
+  }
 }
 
 function applyTranslations() {
@@ -301,11 +311,16 @@ function renderSchemesGrid(schemesList) {
 // =============================================================================
 
 function openSchemeModal(schemeId) {
-  const scheme = state.schemes.find(s => s.id === schemeId);
+  const scheme = (state.allSchemes && state.allSchemes.find(s => s.id === schemeId)) ||
+                 state.schemes.find(s => s.id === schemeId);
   if (!scheme) return;
 
+  const title = (state.currentLang in (scheme.native_names || {})) 
+    ? scheme.native_names[state.currentLang] 
+    : scheme.name;
+
   document.getElementById('modal-scheme-category').textContent = scheme.category;
-  document.getElementById('modal-scheme-name').textContent = scheme.name;
+  document.getElementById('modal-scheme-name').textContent = title;
   document.getElementById('modal-scheme-ministry').textContent = scheme.ministry;
   document.getElementById('modal-scheme-portal-link').href = scheme.official_portal_url;
 
@@ -789,8 +804,10 @@ function initCompareSelections() {
   const container = document.getElementById('compare-selection-chips');
   if (!container) return;
 
-  // Default select first two schemes
-  state.compareSelectedIds = state.schemes.slice(0, 2).map(s => s.id);
+  const schemePool = state.allSchemes.length > 0 ? state.allSchemes : state.schemes;
+  if (state.compareSelectedIds.length === 0 && schemePool.length > 0) {
+    state.compareSelectedIds = schemePool.slice(0, 2).map(s => s.id);
+  }
   renderCompareChips();
   updateComparisonView();
 }
@@ -799,11 +816,16 @@ function renderCompareChips() {
   const container = document.getElementById('compare-selection-chips');
   if (!container) return;
 
-  container.innerHTML = state.schemes.map(s => {
+  const schemePool = state.allSchemes.length > 0 ? state.allSchemes : state.schemes;
+  container.innerHTML = schemePool.map(s => {
     const isSelected = state.compareSelectedIds.includes(s.id);
     const badgeClass = isSelected 
       ? 'bg-blue-600 text-white border-blue-600 shadow-xs' 
       : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-200';
+
+    const displayName = (state.currentLang in (s.native_names || {}))
+      ? s.native_names[state.currentLang]
+      : s.name;
 
     return `
       <button
@@ -812,7 +834,7 @@ function renderCompareChips() {
         class="text-xs px-3 py-1.5 rounded-full border transition font-medium flex items-center space-x-1.5 ${badgeClass}"
       >
         <span>${isSelected ? '✓' : '+'}</span>
-        <span>${escapeHtml(s.name)}</span>
+        <span>${escapeHtml(displayName)}</span>
       </button>
     `;
   }).join('');
@@ -855,9 +877,14 @@ async function updateComparisonView() {
       // Render Matrix Table
       const tableBody = document.getElementById('compare-table-body');
       if (tableBody) {
-        tableBody.innerHTML = data.schemes.map(s => `
+        tableBody.innerHTML = data.schemes.map(s => {
+          const displayName = (state.currentLang in (s.native_names || {}))
+            ? s.native_names[state.currentLang]
+            : s.name;
+
+          return `
           <tr class="hover:bg-slate-50 transition">
-            <td class="py-3 px-4 font-bold text-slate-900">${escapeHtml(s.name)}</td>
+            <td class="py-3 px-4 font-bold text-slate-900">${escapeHtml(displayName)}</td>
             <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-xs bg-slate-100 font-medium">${escapeHtml(s.category)}</span></td>
             <td class="py-3 px-4 text-xs text-slate-600">${escapeHtml(s.ministry)}</td>
             <td class="py-3 px-4 font-semibold text-emerald-700">₹${s.financial_benefit_amount.toLocaleString('en-IN')}</td>
@@ -868,7 +895,8 @@ async function updateComparisonView() {
               <a href="${s.official_portal_url}" target="_blank" rel="noopener noreferrer" class="text-xs text-blue-600 hover:underline">Apply</a>
             </td>
           </tr>
-        `).join('');
+        `;
+        }).join('');
       }
     }
   } catch (err) {
@@ -928,6 +956,7 @@ async function submitNewScheme(event) {
       await fetchSchemes();
       await fetchCategories();
       await fetchMinistries();
+      renderCompareChips();
     } else {
       feedback.className = 'p-3 rounded-lg text-sm bg-rose-50 text-rose-800 border border-rose-200 block';
       feedback.textContent = `Failed to add scheme: ${data.detail || data.message || 'Unknown error'}`;

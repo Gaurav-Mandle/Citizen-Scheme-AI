@@ -139,3 +139,38 @@ body {
 .markdown-body a:hover {
   color: #1d4ed8;
 }
+
+/* ==========================================================================
+   Offline / CDN-Resilience Core Fallbacks
+   Ensures tab switching, modals, and layouts remain strictly functional
+   even if the Tailwind CSS CDN is unreachable in offline or restricted environments.
+   ========================================================================== */
+
+.hidden {
+  display: none !important;
+}
+
+/* Modal Fallback Overlay */
+#scheme-modal:not(.hidden),
+#safe-switch-modal:not(.hidden) {
+  display: flex !important;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  background-color: rgba(15, 23, 42, 0.7);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* Basic Form & Component Fallbacks */
+input[type="text"],
+input[type="number"],
+input[type="url"],
+select,
+textarea {
+  font-family: inherit;
+}

@@ -283,3 +283,52 @@ def test_server_static_index(client):
     assert "text/html" in response.headers.get("content-type", "")
     assert "Citizen Scheme AI" in response.text
 
+
+def test_server_static_fallback_html_response(monkeypatch, client):
+    """Verifies that serve_index returns HTMLResponse fallback if index.html is missing."""
+    import server
+    # Temporarily point STATIC_DIR to a non-existent directory
+    monkeypatch.setattr(server, "STATIC_DIR", "non_existent_dir_for_test")
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "text/html" in response.headers.get("content-type", "")
+    assert "Citizen Scheme AI Web Portal" in response.text
+
+
+def test_server_compare_schemes_native_names(client):
+    """Verifies that /api/schemes/compare includes native_names dictionary for localized rendering."""
+    compare_payload = {"scheme_ids": ["pm-kisan"]}
+    response = client.post("/api/schemes/compare", json=compare_payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["schemes"]) == 1
+    scheme = data["schemes"][0]
+    assert "native_names" in scheme
+    assert isinstance(scheme["native_names"], dict)
+    assert "hi" in scheme["native_names"]
+
+
+def test_server_invalid_citizen_profile_validation(client):
+    """Verifies that Pydantic boundary validation rejects negative age and negative income with 422."""
+    invalid_profile = {
+        "age": -5,
+        "gender": "Male",
+        "annual_income": -100.0
+    }
+    response = client.post("/api/eligibility/evaluate", json=invalid_profile)
+    assert response.status_code == 422
+
+
+def test_server_search_sanitization(client):
+    """Verifies that searching with malicious or boundary text returns safely without crashing."""
+    response = client.get("/api/schemes?search=<script>alert('xss')</script>")
+    assert response.status_code == 200
+    schemes = response.json()
+    assert isinstance(schemes, list)
+
+
+def test_server_chat_empty_query(client):
+    """Verifies that an empty query in chat request is rejected with 422 Unprocessable Entity."""
+    response = client.post("/api/chat", json={"query": "", "lang": "en"})
+    assert response.status_code == 422
+

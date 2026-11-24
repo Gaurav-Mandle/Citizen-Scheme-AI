@@ -8,7 +8,7 @@ import os
 from typing import List, Optional, Dict, Any
 from fastapi import FastAPI, HTTPException, Query, status
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -277,6 +277,7 @@ def compare_schemes(req: CompareRequest):
         comparison_data.append({
             "id": s.id,
             "name": s.name,
+            "native_names": s.native_names,
             "category": s.category,
             "ministry": s.ministry,
             "financial_benefit_amount": s.financial_benefit_amount,
