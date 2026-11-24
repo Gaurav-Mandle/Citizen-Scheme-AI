@@ -971,17 +971,6 @@ async function submitNewScheme(event) {
 }
 
 // =============================================================================
-// SAFE SWITCH MODAL TOGGLE
-// =============================================================================
-
-function toggleSafeSwitchModal() {
-  const modal = document.getElementById('safe-switch-modal');
-  if (modal) {
-    modal.classList.toggle('hidden');
-  }
-}
-
-// =============================================================================
 // UTILITIES
 // =============================================================================
 

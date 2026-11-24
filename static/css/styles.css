@@ -151,8 +151,7 @@ body {
 }
 
 /* Modal Fallback Overlay */
-#scheme-modal:not(.hidden),
-#safe-switch-modal:not(.hidden) {
+#scheme-modal:not(.hidden) {
   display: flex !important;
   position: fixed;
   top: 0;
